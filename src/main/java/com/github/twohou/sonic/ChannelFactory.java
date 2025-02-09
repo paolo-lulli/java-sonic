@@ -2,23 +2,20 @@ package com.github.twohou.sonic;
 
 import java.io.IOException;
 
-import lombok.NonNull;
-
 public class ChannelFactory {
-
     private String address;
-
     private Integer port;
-
     private String password;
-
     private Integer connectionTimeout;
-
     private Integer readTimeout;
 
-    public ChannelFactory(@NonNull String address, @NonNull Integer port, @NonNull String password,
-            @NonNull Integer connectionTimeout,
-            @NonNull Integer readTimeout) {
+    public ChannelFactory(
+            String address,
+            Integer port,
+            String password,
+            Integer connectionTimeout,
+            Integer readTimeout
+    ) {
         this.address = address;
         this.port = port;
         this.password = password;

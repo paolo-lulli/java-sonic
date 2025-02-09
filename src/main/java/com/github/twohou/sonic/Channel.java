@@ -1,16 +1,12 @@
 package com.github.twohou.sonic;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import lombok.NonNull;
 
 public abstract class Channel {
 
@@ -23,21 +19,32 @@ public abstract class Channel {
     private String password;
 
     /**
-     *
-     * @param address Address of Sonic server
-     * @param port Port of Sonic server
-     * @param password auth_password of Sonic server
+     * @param address           Address of Sonic server
+     * @param port              Port of Sonic server
+     * @param password          auth_password of Sonic server
      * @param connectionTimeout Connection timeout in milliseconds
-     * @param readTimeout Read timeout in milliseconds
+     * @param readTimeout       Read timeout in milliseconds
      * @throws IOException
      */
-    public Channel(@NonNull String address, @NonNull Integer port, @NonNull String password,
-            @NonNull Integer connectionTimeout, @NonNull Integer readTimeout)
-            throws IOException {
+    public Channel(
+            String address,
+            Integer port,
+            String password,
+            Integer connectionTimeout,
+            Integer readTimeout
+    ) throws IOException {
+
+        Objects.requireNonNull(address);
+        Objects.requireNonNull(password);
+        Objects.requireNonNull(connectionTimeout);
+        Objects.requireNonNull(readTimeout);
+
         this.password = password;
 
         this.socket = new Socket();
+        //this.socket.connect(new InetSocketAddress(address, port), connectionTimeout);
         this.socket.connect(new InetSocketAddress(address, port), connectionTimeout);
+
         this.socket.setSoTimeout(readTimeout);
         this.socketReader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
         this.socketWriter = new BufferedWriter(new OutputStreamWriter(this.socket.getOutputStream()));
@@ -45,7 +52,7 @@ public abstract class Channel {
         this.assertPrompt("^CONNECTED");
     }
 
-    protected void send(@NonNull String command) throws IOException {
+    protected void send(String command) throws IOException {
         this.socketWriter.write(command + "\r\n");
         this.socketWriter.flush();
     }
@@ -68,14 +75,14 @@ public abstract class Channel {
         return Integer.valueOf(matcher.group(1));
     }
 
-    protected void assertPrompt(@NonNull String regexp) throws IOException {
+    protected void assertPrompt(String regexp) throws IOException {
         String prompt = this.readLine();
         if (Pattern.matches(regexp, prompt)) {
             throw new SonicException("unexpected prompt: " + prompt);
         }
     }
 
-    public void start(@NonNull Mode mode) throws IOException {
+    public void start(Mode mode) throws IOException {
         this.send(String.format("START %s %s", mode.name(), this.password));
         this.assertPrompt("^STARTED");
     }

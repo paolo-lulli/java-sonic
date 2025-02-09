@@ -4,20 +4,22 @@
 package com.github.twohou.sonic;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static org.junit.Assert.assertEquals;
+
 public class IntegrationTest {
-    @Test public void testIntegration() throws IOException {
-        String address = "127.0.0.1";
+    @Test
+    public void testIntegration() throws IOException {
+        String address = "localhost";
         Integer port = 1491;
-        String password = "passwd";
+        String password = "SecretPassword";
         Integer connectionTimeout = 5000;
         Integer readTimeout = 5000;
-        String collection = "messages";
-        String bucket = "default";
+        String collection = "movies";
+        String bucket = "general";
 
         // init channels
         ChannelFactory factory = new ChannelFactory(address, port, password, connectionTimeout, readTimeout);
@@ -27,6 +29,8 @@ public class IntegrationTest {
 
         // index
         ingest.ping();
+
+
         ingest.push(collection, bucket, "1", "MPs are starting to debate the process of voting on their preferred Brexit options, as Theresa May prepares to meet Tory backbenchers in an effort to win them over to her agreement.");
         ingest.push(collection, bucket, "2", "A shadowy group committed to ousting North Korea\"s leader Kim Jong-un has claimed it was behind a raid last month at the North Korean embassy in Spain.");
         ingest.push(collection, bucket, "3", "Meng Hongwei, the former Chinese head of Interpol, will be prosecuted in his home country for allegedly taking bribes, China\"s Communist Party says.");
@@ -72,5 +76,6 @@ public class IntegrationTest {
         ingest.quit();
         search.quit();
         control.quit();
+
     }
 }

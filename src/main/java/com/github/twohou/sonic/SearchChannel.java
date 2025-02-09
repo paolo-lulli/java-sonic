@@ -6,18 +6,16 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import lombok.NonNull;
-
 public class SearchChannel extends Channel {
-    public SearchChannel(@NonNull String address, @NonNull Integer port, @NonNull String password,
-            @NonNull Integer connectionTimeout, @NonNull Integer readTimeout)
+    public SearchChannel(String address, Integer port, String password,
+                         Integer connectionTimeout, Integer readTimeout)
             throws IOException {
         super(address, port, password, connectionTimeout, readTimeout);
         this.start(Mode.search);
     }
 
-    public ArrayList<String> query(@NonNull String collection, @NonNull String bucket, @NonNull String terms,
-            Integer limit, Integer offset)
+    public ArrayList<String> query(String collection, String bucket, String terms,
+                                   Integer limit, Integer offset)
             throws IOException {
         this.send(String.format(
                 "%s %s %s \"%s\"%s%s",
@@ -33,13 +31,13 @@ public class SearchChannel extends Channel {
         return assertSearchResults(SearchType.QUERY, queryId);
     }
 
-    public ArrayList<String> query(@NonNull String collection, @NonNull String bucket, @NonNull String terms)
+    public ArrayList<String> query(String collection, String bucket, String terms)
             throws IOException {
         return query(collection, bucket, terms, null, null);
     }
 
-    public ArrayList<String> suggest(@NonNull String collection, @NonNull String bucket, @NonNull String word,
-            Integer limit)
+    public ArrayList<String> suggest(String collection, String bucket, String word,
+                                     Integer limit)
             throws IOException {
         this.send(String.format(
                 "%s %s %s \"%s\"%s",
@@ -54,7 +52,7 @@ public class SearchChannel extends Channel {
         return assertSearchResults(SearchType.SUGGEST, searchId);
     }
 
-    public ArrayList<String> suggest(@NonNull String collection, @NonNull String bucket, @NonNull String word)
+    public ArrayList<String> suggest(String collection, String bucket, String word)
             throws IOException {
         return suggest(collection, bucket, word, null);
     }
