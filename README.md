@@ -1,9 +1,14 @@
 # java-sonic
 
-[![Release](https://jitpack.io/v/twohou/java-sonic.svg)](https://jitpack.io/#twohou/java-sonic)
-[![Build Status](https://travis-ci.com/twohou/java-sonic.svg?branch=master)](https://travis-ci.com/twohou/java-sonic)
+Clone of: 
 
+[![java-sonic](https://jitpack.io/v/twohou/java-sonic.svg)](https://jitpack.io/#twohou/java-sonic)
 Java client library of [Sonic search](https://github.com/valeriansaliou/sonic/)
+
+## Differences from upstream
+
+-   Drops Lombok dependency
+-   Just build with Maven
 
 ## Install
 
@@ -11,6 +16,3 @@ Java client library of [Sonic search](https://github.com/valeriansaliou/sonic/)
 mvn clean install
 ```
 
-## Usage
-
-See [example](./src/test/java/com/github/twohou/sonic/IntegrationTest.java)
